@@ -14,6 +14,18 @@ Then start any containers you want proxied with an env var `VIRTUAL_HOST=subdoma
 
 Provided your DNS is setup to forward foo.bar.com to the a host running nginx-proxy, the request will be routed to a container with the VIRTUAL_HOST env var set.
 
+### Basic auth
+
+To enable basic authentication for a virtual host, add the env var ENABLE_BASIC_AUTH="true" to your container. The easiest way is to add a line similar to the following to your Dockerfile.
+    
+    ENV ENABLE_BASIC_AUTH true
+
+In order for this to work a `.htpasswd` file is required as a sibling of `nginx.tmpl`, follow the following steps to create you're own.
+
+    $ htpasswd -c ./.htpasswd username
+    # then follow the prompt
+
+
 ### Multiple Ports
 
 If your container exposes multiple ports, nginx-proxy will default to the service running on port 80.  If you need to specify a different port, you can set a VIRTUAL_PORT env var to select a different one.  If your container only exposes one port and it has a VIRTUAL_HOST env var set, that port will be selected.
