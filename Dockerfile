@@ -1,6 +1,8 @@
 FROM ubuntu:14.04
 MAINTAINER Jason Wilder jwilder@litl.com
 
+RUN apt-get -y install apache2-utils
+
 # Install Nginx.
 RUN echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu trusty main" > /etc/apt/sources.list.d/nginx-stable-trusty.list \
  && echo "deb-src http://ppa.launchpad.net/nginx/stable/ubuntu trusty main" >> /etc/apt/sources.list.d/nginx-stable-trusty.list \
@@ -26,6 +28,8 @@ ENV DOCKER_GEN_VERSION 0.3.4
 RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
  && tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
  && rm /docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz
+
+ADD ./.htpasswd /etc/nginx/
 
 COPY . /app/
 WORKDIR /app/
